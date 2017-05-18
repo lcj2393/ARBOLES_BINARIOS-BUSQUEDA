@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 /**DEFINIR ASIGNACION DE MEMORIA**/
-#define reserva (Nodo*)malloc(sizeof(Nodo))
+#define ReservaMemoria (Nodo*)malloc(sizeof(Nodo))
 
 /**ESTRCUTURA NODO ARBOL**/
 struct Nodo{
@@ -14,8 +14,7 @@ struct Nodo{
 void menu(Nodo *&);/**FUNCION MENU**/
 void insNodo(Nodo *&,int);/**FUNCION INSERTAR EN NODO**/
 bool buscNodo(Nodo *,int);/**FUNCION PARA BUSCAR NODOS EN EL ARBOL**/
-void impArbol(Nodo *&);/**FUNCION PARA IMPRIMIR EL ARBOL**/
-Nodo crear_Nodo(Nodo *&, int );/**FUNCION PARA CREAR NODO**/
+void impArbol(Nodo *);/**FUNCION PARA IMPRIMIR EL ARBOL**/
 
 
 int main(){
@@ -23,9 +22,10 @@ int main(){
     Nodo *arbol=NULL;
     system("cls");
     menu(arbol);
+    return 0;
 }
 
-void menu(Nodo *&arbol){
+void menu(Nodo *&arbol){/**FUNCION MENU PRINCIPLA DELPROGRAMA**/
     int opc, sub_opc;
     char letra;
     system("cls");
@@ -33,12 +33,16 @@ void menu(Nodo *&arbol){
     printf("\n1. Insertar Datos");
     printf("\n2. Imprimir Arbol");
     printf("\n3. Buscar Nodo del Arbol");
-    printf("\n4. Editar Nodo del Arbol");
     printf("\n0. Salir\n");
     printf("Digite opcion: ");
     scanf("%d",&opc);
 
     switch(opc){
+        case 0:
+            system("cls");
+            printf("\n\t\tHas salido del programa!!!\n\n");
+            system("pause");
+            break;
         case 1:
             printf("\n\t\t\t+++++INSERTAR DATOS+++++\n\n");
             do{
@@ -56,10 +60,10 @@ void menu(Nodo *&arbol){
                 printf("Continuar Ingresando? (1)SI - (2)NO: ");
                 scanf("%d",&sub_opc);
             }while(sub_opc!=2);
+            system("pause");
+            system("cls");
+            menu(arbol);
             break;
-        system("pause");
-        system("cls");
-        menu(arbol);
         case 2:
             printf("\n\t\t\t+++++IMPRIMIR ARBOL+++++\n\n");
             printf("\nEl Arbol contiene los sigueintes Nodos: \n\n");
@@ -71,6 +75,7 @@ void menu(Nodo *&arbol){
             menu(arbol);
             break;
         case 3:
+            printf("\n\t\t\t+++++BUSCAR ARBOL+++++\n\n");
             printf("Ingrese dato que desea buscar: ");
             scanf("%s",&letra);
             int convert_c2int=letra;
@@ -79,32 +84,26 @@ void menu(Nodo *&arbol){
                     convert_c2int=convert_c2int-32;
                 }
                 if(buscNodo(arbol,convert_c2int)==true){
-                    printf("Elemento encontrado\n");
+                    printf("Elemento %s encontrado en el Arbol!!\n",letra);
                 }else{
-                    printf("Elemento no encontrado\n");
+                    printf("Elemento %s no encontrado en el Arbol!!\n",letra);
                 }
             }else{
                 printf("Caracter ingresado no valido\n");
             }
+            system("pause");
+            system("cls");
+            menu(arbol);
             break;
-        system("pause");
-        system("cls");
-        menu(arbol);
     }
-}
-
-Nodo crear_Nodo(Nodo *&arbol, int n){/**FUNCION PARA CREAR NODO**/
-    Nodo *nuevo=reserva;
-    nuevo=arbol;
-    nuevo->dato=n;
-    nuevo->Izquierda=NULL;
-    nuevo->Derecha=NULL;
-    return nuevo;
 }
 void insNodo(Nodo *&arbol, int n){/**FUNCION INSERTAR EN NODO**/
     if(arbol==NULL){
-        Nodo *nuevo_Nodo=crear_Nodo(n);
+        Nodo *nuevo_Nodo=ReservaMemoria;
         arbol=nuevo_Nodo;
+        nuevo_Nodo->dato=n;
+        nuevo_Nodo->Izquierda=NULL;
+        nuevo_Nodo->Derecha=NULL;
     }else{
         int valor=arbol->dato;
         if(n<valor){
@@ -127,9 +126,10 @@ bool buscNodo(Nodo *arbol, int n){/**FUNCION PARA BUSCAR NODOS EN EL ARBOL**/
 }
 void impArbol(Nodo *arbol){/**FUNCION PARA IMPRIMIR EL ARBOL**/
     if(arbol!=NULL){
-        impArbol(arbol->Izquierda);
+        arbol=arbol->Izquierda;
         printf(" <%s> ",arbol->dato);
-        impArbol(arbol->Derecha);
+        arbol=arbol->Derecha;
+        printf(" <%s> ",arbol->dato);
     }else{
         printf("\n\nArbol Vacio!!\n\n");
     }
