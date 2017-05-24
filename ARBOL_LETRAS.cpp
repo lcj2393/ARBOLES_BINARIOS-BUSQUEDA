@@ -1,3 +1,5 @@
+/**ARBOL BINARIO DE BUSQUEDA**/
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -14,8 +16,11 @@ struct Nodo{
 void menu(Nodo *&);/**FUNCION MENU**/
 void insNodo(Nodo *&,int);/**FUNCION INSERTAR EN NODO**/
 bool buscNodo(Nodo *,int);/**FUNCION PARA BUSCAR NODOS EN EL ARBOL**/
+void modNodo(nodo *&,int);/**FUNCION PARA MODIFICAR NODO DEL ARBOL**/
 void impArbol(Nodo *);/**FUNCION PARA IMPRIMIR EL ARBOL**/
-
+void impPosOrden(Nodo *);/**FUNCION PARA IMPRIMIR EL ARBOL POSORDEN**/
+void impPreOrden(Nodo *);/**FUNCION PARA IMPRIMIR EL ARBOL PREORDEN**/
+void impInOrden(Nodo *);/**FUNCION PARA IMPRIMIR EL ARBOL INORDEN**/
 
 int main(){
     /**DECLARACION DEL ARBOL**/
@@ -24,15 +29,19 @@ int main(){
     menu(arbol);
     return 0;
 }
-
 void menu(Nodo *&arbol){/**FUNCION MENU PRINCIPLA DELPROGRAMA**/
     int opc, sub_opc;
     char letra;
     system("cls");
-    printf("\n\t\t\t+++++MENU ARBOL BINARIO+++++\n\n");
+    printf("\n\t\t+++++MENU ARBOL BINARIO DE BUSQUEDA+++++\n\n");
     printf("\n1. Insertar Datos");
-    printf("\n2. Imprimir Arbol");
-    printf("\n3. Buscar Nodo del Arbol");
+    printf("\n2. Editar Elemento de Arbol");
+    printf("\n3. Buscar Elemento en Arbol");
+    printf("\n4. Eliminar Elemento de Arbol");
+    printf("\n5. Mostrar Arbol");
+    printf("\n6. Arbol PreOrden");
+    printf("\n7. Arbol PosOrden");
+    printf("\n8. Arbol InOrder");
     printf("\n0. Salir\n");
     printf("Digite opcion: ");
     scanf("%d",&opc);
@@ -65,14 +74,6 @@ void menu(Nodo *&arbol){/**FUNCION MENU PRINCIPLA DELPROGRAMA**/
             menu(arbol);
             break;
         case 2:
-            printf("\n\t\t\t+++++IMPRIMIR ARBOL+++++\n\n");
-            printf("\nEl Arbol contiene los sigueintes Nodos: \n\n");
-            while(arbol!=NULL){
-                impArbol(arbol);
-            }
-            system("pause");
-            system("cls");
-            menu(arbol);
             break;
         case 3:
             printf("\n\t\t\t+++++BUSCAR ARBOL+++++\n\n");
@@ -90,6 +91,40 @@ void menu(Nodo *&arbol){/**FUNCION MENU PRINCIPLA DELPROGRAMA**/
                 }
             }else{
                 printf("Caracter ingresado no valido\n");
+            }
+            system("pause");
+            system("cls");
+            menu(arbol);
+            break;
+        case 4:
+            system("pause");
+            system("cls");
+            menu(arbol);
+            break;
+        case 5:
+            printf("\n\t\t\t+++++IMPRIMIR ARBOL+++++\n\n");
+            printf("\n1. Arbol PreOrden");
+            printf("\n2. Arbol PosOrden");
+            printf("\n3. Arbol InOrder");
+            printf("\n0. Salir al Menu\n");
+            printf("Digite opcion: ");
+            scanf("%d",&sub_opc);
+            switch(sub_opc){
+            case 0:
+                printf("\nHas Salido del menu de Tipos de Impresion del Arbol!!\n");
+                system("pause");
+                system("cls");
+                menu(arbol);
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                printf("\n\nLa Opcion Ingresada no es Valida!!\n\n");
+                break;
             }
             system("pause");
             system("cls");
@@ -134,3 +169,58 @@ void impArbol(Nodo *arbol){/**FUNCION PARA IMPRIMIR EL ARBOL**/
         printf("\n\nArbol Vacio!!\n\n");
     }
 }
+void modNodo(Nodo *&arbol, int n){/**FUNCION PARA MODIFICAR UN NODO DEL ARBOL**/
+    char letra;
+    if(arbol==NULL){
+        return;
+    }else if(arbol->dato==n){
+        printf("Digite valor nuevo: ");
+        scanf("%s",&letra);
+        int convert_c2int=letra;
+        if(convert_c2int>=65 && convert_c2int<=90 || convert_c2int>=97 && convert_c2int<=122){
+            if(convert_c2int>90){
+                convert_c2int=convert_c2int-32;
+            }
+            arbol->dato=convert_c2int;
+        }else{
+            printf("El Caracter ingresado no es valido\n");
+        }
+        return;
+    }else if(n<arbol->dato){
+        return modNodo(arbol->Izquierda,n);
+    }else{
+        return modNodo(arbol->Derecha,n);
+    }
+}
+void impPreOrden(Nodo *arbol){/**FUNCION PARA IMPRIMIR EL ARBOL PREORDEN**/
+    if(arbol==NULL){
+        return;
+    }else{
+        char convert_c2int=arbol->dato;
+        printf("%c ",convert_c2int);
+        impPreOrden(arbol->Izquierda);
+        impPreOrden(arbol->Derecha);
+    }
+}
+void impInOrder(Nodo *arbol){/**FUNCION PARA IMPRIMIR EL ARBOL INORDEN**/
+    if(arbol==NULL){
+        return;
+    }else{
+        impInOrder(arbol->Izquierda);
+        char convert_c2int=arbol->dato;
+        printf("%c ",convert_c2int);
+        impInOrder(arbol->Derecha);
+    }
+}
+void impPosOrden(Nodo *arbol){/**FUNCION PARA IMPRIMIR EL ARBOL POSORDEN**/
+    if(arbol==NULL){
+        return;
+    }else{
+        impPosOrden(arbol->Izquierda);
+        impPosOrden(arbol->Derecha);
+        char convert_c2int=arbol->dato;
+        printf("%c ",convert_c2int);
+    }
+}
+
+/**FIN DEL PROGRAMA!!**/
