@@ -1,4 +1,4 @@
-/**ARBOL BINARIO DE BUSQUEDA**/
+/**ARBOL BINARIO**/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@ void menu(Nodo *&arbol){/**FUNCION MENU PRINCIPLA DELPROGRAMA**/
     int opc, sub_opc;
     char letra;
     system("cls");
-    printf("\n\t\t+++++MENU ARBOL BINARIO DE BUSQUEDA+++++\n\n");
+    printf("\n\t\t+++++MENU ARBOL BINARIO+++++\n\n");
     printf("\n1. Insertar Datos");
     printf("\n2. Editar Elemento de Arbol");
     printf("\n3. Buscar Elemento en Arbol");
@@ -148,16 +148,24 @@ void menu(Nodo *&arbol){/**FUNCION MENU PRINCIPLA DELPROGRAMA**/
             break;
     }
 }
+
+Nodo *crearNodo(int n){
+    Nodo *nNodo=(Nodo*)malloc(sizeof(Nodo));
+    nNodo->dato=n;
+    nNodo->Izquierda=NULL;
+    nNodo->Derecha=NULL;
+    return nNodo;
+}
+
 void insNodo(Nodo *&arbol, int n){/**FUNCION INSERTAR EN NODO**/
+    int m;
     if(arbol==NULL){
-        Nodo *nuevo_Nodo=ReservaMemoria;
-        arbol=nuevo_Nodo;
-        nuevo_Nodo->dato=n;
-        nuevo_Nodo->Izquierda=NULL;
-        nuevo_Nodo->Derecha=NULL;
+        Nodo *nuevo=crearNodo(n);
+        arbol=nuevo;
     }else{
-        int valor=arbol->dato;
-        if(n<valor){
+        printf("Insertar a (1)Izquierda o (2)Derecha: ");
+        scanf("%d",&m);
+        if(m==1){
             insNodo(arbol->Izquierda,n);
         }else{
             insNodo(arbol->Derecha,n);
@@ -165,47 +173,41 @@ void insNodo(Nodo *&arbol, int n){/**FUNCION INSERTAR EN NODO**/
     }
 }
 bool buscNodo(Nodo *arbol, int n){/**FUNCION PARA BUSCAR NODOS EN EL ARBOL**/
+    int m;
     if(arbol==NULL){
         return false;
-    }else if(arbol->dato==n){
-        return true;
-    }else if(n<arbol->dato){
-        return buscNodo(arbol->Izquierda,n);
     }else{
-        return buscNodo(arbol->Derecha,n);
-    }
-}
-void impArbol(Nodo *arbol){/**FUNCION PARA IMPRIMIR EL ARBOL**/
-    if(arbol!=NULL){
-        arbol=arbol->Izquierda;
-        printf(" <%s> ",arbol->dato);
-        arbol=arbol->Derecha;
-        printf(" <%s> ",arbol->dato);
-    }else{
-        printf("\n\nArbol Vacio!!\n\n");
+        if(arbol->dato==n){
+            return true;
+        }else{
+            printf("Buscar por <1>Izquierda O <2>Derecha: ");
+            scanf("%d",&m);
+            if(m==1){
+                buscNodo(arbol->Izquierda,n);
+            }else{
+                buscNodo(arbol->Derecha,n);
+            }
+        }
     }
 }
 void modNodo(Nodo *&arbol, int n){/**FUNCION PARA MODIFICAR UN NODO DEL ARBOL**/
-    char letra;
+    int nuevoDato, ubicacion;
     if(arbol==NULL){
         return;
-    }else if(arbol->dato==n){
-        printf("Digite valor nuevo: ");
-        scanf("%s",&letra);
-        int convert_c2int=letra;
-        if(convert_c2int>=65 && convert_c2int<=90 || convert_c2int>=97 && convert_c2int<=122){
-            if(convert_c2int>90){
-                convert_c2int=convert_c2int-32;
-            }
-            arbol->dato=convert_c2int;
-        }else{
-            printf("El Caracter ingresado no es valido\n");
-        }
-        return;
-    }else if(n<arbol->dato){
-        return modNodo(arbol->Izquierda,n);
     }else{
-        return modNodo(arbol->Derecha,n);
+        if(arbol->dato==n){
+            printf("Digite nuevo dato: ");
+            scanf("%d",&nuevoDato);
+            arbol->dato=nuevoDato;
+        }else{
+            printf("Buscar 1.Izquierda  2.Derecha: ");
+            scanf("%d",&ubicacion);
+            if(ubicacion==1){
+                modNodo(arbol->Izquierda,n);
+            }else{
+                modNodo(arbol->Derecha,n);
+            }
+        }
     }
 }
 void impPreOrder(Nodo *arbol){/**FUNCION PARA IMPRIMIR EL ARBOL PREORDEN**/
